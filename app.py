@@ -4,9 +4,9 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
+import seaborn as sns
 
-
-st.title("Fraud Detection Using SOM(Self-Organizing-Maps)")
+st.title("Fraud Detection Using SOM")
 
 # """## Importing the dataset"""
 
@@ -17,13 +17,19 @@ y = dataset.iloc[:, -1].values
 st.subheader('Dataset')
 st.dataframe(dataset.head())
 st.dataframe(dataset.tail())
+print(dataset.isnull().sum())
 
+st.subheader('Correlation Between The Fields')
+dcorr=dataset.iloc[:, 1:-1]
+sns.heatmap(dcorr.corr())
+# plt.matshow(dcorr.corr())
+# plt.show()
+st.pyplot()
 # """## Feature Scaling"""
 
 from sklearn.preprocessing import MinMaxScaler
 sc = MinMaxScaler(feature_range = (0,1))
 X = sc.fit_transform(X)
-
 # """##Training the SOM"""
 
 from minisom import MiniSom
@@ -39,7 +45,7 @@ som.train_random(data = X, num_iteration = 100)'''
 st.code(code, language='python')
 
 # """##Visualizing the results"""
-st.subheader('Visualizing the results')
+st.subheader('Visualizing the results(Self-Organizing-Map)')
 from pylab import bone, pcolor, colorbar, plot, show
 bone()
 pcolor(som.distance_map().T)
